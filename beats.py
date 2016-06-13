@@ -32,8 +32,7 @@ def playClipThread(path):
 	while (data and not reset):
 		stream.write(data)
 		data = wf.readframes(CHUNK)
-
-def playClip(clip):
+def killThread():
 	global reset
 	global playThread
 
@@ -41,11 +40,19 @@ def playClip(clip):
 		reset = True
 		playThread.join()
 		reset = False
-	
+
+def playClip(clip):
+	global playThread
+
+	killThread()
+
 	playThread = threading.Thread(target=playClipThread, args=(clip,))
 	playThread.start()
 
 def keydown(e):
+	if (e.char == ' '):
+		killThread()
+		return
 	clip = clips.get(e.char, False)
 	if (clip): playClip(clip)
 	
