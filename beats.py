@@ -6,8 +6,8 @@ import pyaudio
 import wave
 import threading
 
-TITLE_FONT = ("Helvetica", 18, "bold")
-CHUNK = 2**10
+titleFont = ("Helvetica", 14)
+chunkSize = 2**10
 p = pyaudio.PyAudio()
 
 class BeatsApp(Tk):
@@ -22,11 +22,11 @@ class BeatsApp(Tk):
                 rate=wf.getframerate(),
                 output=True)
 
-        data = wf.readframes(CHUNK)
+        data = wf.readframes(chunkSize)
 
         while (data and not self.reset):
             stream.write(data)
-            data = wf.readframes(CHUNK)
+            data = wf.readframes(chunkSize)
 
     def killThread(self):
         if (threading.active_count() > 1):
@@ -75,7 +75,7 @@ class OtherView(Frame):
     def __init__(self, parent, app):
         Frame.__init__(self, parent)
 
-        label = Label(self, text="This is page 1", font=TITLE_FONT)
+        label = Label(self, text="Another view will\ngo here eventually", font=titleFont)
         label.pack(side="top", fill="x", pady=10)
 
 class PadView(Frame):
@@ -101,7 +101,7 @@ class PadView(Frame):
         for i in range(len(self.buttons)):
             self.buttons[i] = Button(self, text='', width=2, height=2)
             self.buttons[i].grid(row=i // 4, column=i % 4)
-                
+
         with open("pad.py") as f: p = eval(f.read())
         self.clips = p["clips"]
         self.keyMap = p["keyMap"]
