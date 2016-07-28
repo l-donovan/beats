@@ -3,8 +3,9 @@
 from tkinter import *
 
 import pyaudio
-import wave
+import sys
 import threading
+import wave
 
 titleFont = ("Helvetica", 14)
 chunkSize = 2**10
@@ -102,7 +103,7 @@ class PadView(Frame):
             self.buttons[i] = Button(self, text='', width=2, height=2)
             self.buttons[i].grid(row=i // 4, column=i % 4)
 
-        with open("pad.py") as f: p = eval(f.read())
+        with open(sys.argv[1]) as f: p = eval(f.read())
         self.clips = p["clips"]
         self.keyMap = p["keyMap"]
         self.buttonMap = p["buttonMap"]
